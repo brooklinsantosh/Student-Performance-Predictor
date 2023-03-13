@@ -3,6 +3,7 @@ import sys
 
 from src.exception import CustomException
 from src.logger import logging
+from src.components.data_transformation import DataTransformation, DataTransformationConfig, DataTransformationResult
 import config
 
 import pandas as pd
@@ -45,5 +46,7 @@ class DataIngestion:
         
 if __name__ == "__main__":
     obj = DataIngestion()
-    obj.initiate_data_ingestion()
-
+    di_result = obj.initiate_data_ingestion()
+    data_transformation = DataTransformation()
+    dt_result = data_transformation.initiate_data_transformation(di_result.train_data_path, di_result.test_data_path)
+    
