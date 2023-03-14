@@ -4,16 +4,6 @@ import numpy as np
 import pandas as pd
 from dataclasses import dataclass
 
-from sklearn.linear_model import LinearRegression
-from sklearn.neighbors import KNeighborsRegressor
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.ensemble import (
-    AdaBoostRegressor,
-    GradientBoostingRegressor,
-    RandomForestRegressor,
-)
-from xgboost import XGBRegressor
-from catboost import CatBoostRegressor
 
 from sklearn.metrics import r2_score
 
@@ -40,24 +30,14 @@ class ModelTrainer:
                 test_arr[:,:-1],
                 test_arr[:,-1]
             )
-
-            models = {
-                "Random Forest": RandomForestRegressor(),
-                "Decision Tree": DecisionTreeRegressor(),
-                "Gradient Boosting": GradientBoostingRegressor(),
-                "Linear Regression": LinearRegression(),
-                #"K-Neighbors Regressor": KNeighborsRegressor(),
-                "XGB Regressor": XGBRegressor(),
-                "CatBoost Regressor": CatBoostRegressor(verbose=False),
-                "AdaBoost Regressor": AdaBoostRegressor(),
-            }
-
             model_report: pd.DataFrame = evaluate_model(
                 X_train= X_train, 
                 y_train= y_train, 
                 X_test= X_test,
                 y_test= y_test,
-                models= models)
+                models= config.MODELS,
+                params = config.PARAMS)
+            
             
             logging.info("Trained all the models.")
             logging.debug(f"Models Report: \n {model_report}")
@@ -69,7 +49,7 @@ class ModelTrainer:
             if best_model_test_score < 0.6:
                 raise CustomException("No best model found.")
 
-            best_model= models[best_model_name]
+            best_model= config.MODELS[best_model_name]
             logging.info(f"Best model is: {best_model_name} with r2_score : {best_model_test_score}")
 
             save_object(
