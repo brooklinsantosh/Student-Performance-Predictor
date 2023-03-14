@@ -16,7 +16,7 @@ import config
 
 @dataclass
 class DataTransformationConfig:
-    preprocessor_obj_file_path: str = os.path.join("artifacts","preprocessor.pkl")
+    preprocessor_obj_file_path: str = config.PREPROCESSOR_OBJ_PATH
 
 @dataclass
 class DataTransformationResult:

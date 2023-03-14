@@ -1,10 +1,11 @@
 import os
 import sys
 
+import config
 from src.exception import CustomException
 from src.logger import logging
 from src.components.data_transformation import DataTransformation, DataTransformationConfig, DataTransformationResult
-import config
+from src.components.model_trainer import ModelTrainer, ModelTrainerConfig
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -50,3 +51,6 @@ if __name__ == "__main__":
     data_transformation = DataTransformation()
     dt_result = data_transformation.initiate_data_transformation(di_result.train_data_path, di_result.test_data_path)
     
+    model_trainer = ModelTrainer() 
+    model_trainer.initiate_model_trainer(dt_result.train_arr, dt_result.test_arr, dt_result.preprocessor_obj_file_path)
+
